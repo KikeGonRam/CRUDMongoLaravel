@@ -55,11 +55,11 @@
         </div>
     @endif
 
-    <!-- Search Form -->
+    {{-- Formulario de Búsqueda --}}
     <div class="mb-6">
         <form action="{{ route('productos.index') }}" method="GET" class="flex items-center space-x-4">
             <div class="flex-1">
-                <input type="text" name="search" value="{{ request('search') }}" placeholder="Buscar por nombre..." class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-primary focus:border-primary">
+                <input type="text" name="search" value="{{ $search ?? '' }}" placeholder="Buscar por nombre o descripción..." class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-primary focus:border-primary">
             </div>
             <button type="submit" class="px-4 py-2 bg-primary-dark text-white rounded-md hover:bg-primary-darker transition ease-in-out duration-150">
                 <i class="fas fa-search mr-2"></i> Buscar
@@ -82,7 +82,7 @@
         </div>
     @endif
 
-    <!-- Product Table -->
+    {{-- Tabla de Productos --}}
     <div class="bg-white shadow overflow-hidden sm:rounded-lg transition-all duration-300 hover:shadow-lg">
         <div class="overflow-x-auto">
             <table class="min-w-full divide-y divide-gray-200">
@@ -150,17 +150,17 @@
                                 <div class="text-sm text-gray-900">{{ $producto->created_at->format('d/m/Y H:i') }}</div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                <div class="flex space-x-2">
-                                    <a href="{{ route('productos.show', $producto->_id) }}" class="text-blue-600 hover:text-blue-900 transition-colors duration-200" data-tooltip="Ver detalles">
+                                <div class="flex items-center space-x-2">
+                                    <a href="{{ route('productos.show', $producto->_id) }}" class="p-2 text-blue-600 bg-blue-100 hover:bg-blue-200 rounded-full transition-colors duration-200" data-tooltip="Ver detalles">
                                         <i class="fas fa-eye"></i>
                                     </a>
-                                    <a href="{{ route('productos.edit', $producto->_id) }}" class="text-yellow-600 hover:text-yellow-900 transition-colors duration-200" data-tooltip="Editar">
+                                    <a href="{{ route('productos.edit', $producto->_id) }}" class="p-2 text-yellow-600 bg-yellow-100 hover:bg-yellow-200 rounded-full transition-colors duration-200" data-tooltip="Editar">
                                         <i class="fas fa-edit"></i>
                                     </a>
                                     <form action="{{ route('productos.destroy', $producto->_id) }}" method="POST" class="inline-block">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" onclick="return confirm('¿Estás seguro de eliminar este producto?')" class="text-red-600 hover:text-red-900 transition-colors duration-200" data-tooltip="Eliminar">
+                                        <button type="submit" onclick="return confirm('¿Estás seguro de eliminar este producto?')" class="p-2 text-red-600 bg-red-100 hover:bg-red-200 rounded-full transition-colors duration-200" data-tooltip="Eliminar">
                                             <i class="fas fa-trash-alt"></i>
                                         </button>
                                     </form>
@@ -171,12 +171,17 @@
                         <tr class="animate__animated animate__fadeIn">
                             <td colspan="6" class="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-500">
                                 <div class="flex flex-col items-center justify-center py-8">
-                                    <i class="fas fa-box-open text-4xl text-gray-400 mb-3 animate__animated animate__bounceIn"></i>
-                                    <p class="text-lg font-medium text-gray-600">No hay productos registrados</p>
-                                    <p class="text-sm text-gray-500 mt-1">Comienza agregando un nuevo producto</p>
-                                    <a href="{{ route('productos.create') }}" class="mt-4 inline-flex items-center px-4 py-2 bg-primary border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-primary-dark focus:bg-primary-dark active:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 transition ease-in-out duration-150">
-                                        <i class="fas fa-plus-circle mr-2"></i> Crear Producto
-                                    </a>
+                                    <i class="fas fa-search text-4xl text-gray-400 mb-3 animate__animated animate__bounceIn"></i>
+                                    @if ($search)
+                                        <p class="text-lg font-medium text-gray-600">No se encontraron productos que coincidan con "{{ $search }}"</p>
+                                        <p class="text-sm text-gray-500 mt-1">Intenta con otros términos de búsqueda o <a href="{{ route('productos.index') }}" class="text-primary hover:underline">limpia la búsqueda</a>.</p>
+                                    @else
+                                        <p class="text-lg font-medium text-gray-600">No hay productos registrados</p>
+                                        <p class="text-sm text-gray-500 mt-1">Comienza agregando un nuevo producto.</p>
+                                        <a href="{{ route('productos.create') }}" class="mt-4 inline-flex items-center px-4 py-2 bg-primary border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-primary-dark focus:bg-primary-dark active:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 transition ease-in-out duration-150">
+                                            <i class="fas fa-plus-circle mr-2"></i> Crear Producto
+                                        </a>
+                                    @endif
                                 </div>
                             </td>
                         </tr>
@@ -186,7 +191,7 @@
         </div>
     </div>
 
-    <!-- Pagination -->
+    {{-- Paginación --}}
     <div class="mt-6 animate__animated animate__fadeInUp">
         <div class="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6 rounded-b-lg shadow-sm">
             {{ $productos->appends(request()->query())->links() }}
@@ -197,41 +202,63 @@
 
 @section('scripts')
 <script>
+    // Inicialización de Tooltips (Información sobre herramientas)
     document.addEventListener('DOMContentLoaded', function() {
         const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-tooltip]'));
         tooltipTriggerList.map(function (tooltipTriggerEl) {
-            let tooltip = null;
+            let tooltip = null; // Almacena la referencia al elemento tooltip
+
             tooltipTriggerEl.addEventListener('mouseenter', function() {
+                // Crear elemento tooltip
                 tooltip = document.createElement('div');
                 tooltip.className = 'absolute z-50 bg-gray-800 text-white text-xs rounded py-1 px-2 whitespace-nowrap';
                 tooltip.textContent = this.getAttribute('data-tooltip');
-                tooltip.style.top = (this.getBoundingClientRect().top - 30) + 'px';
-                tooltip.style.left = (this.getBoundingClientRect().left + this.offsetWidth / 2 - tooltip.offsetWidth / 2) + 'px';
+
+                // Posicionar tooltip (ajustado para que aparezca arriba del elemento)
+                const rect = this.getBoundingClientRect();
+                document.body.appendChild(tooltip); // Añadir al body para calcular dimensiones correctamente
+
+                tooltip.style.top = (rect.top + window.scrollY - tooltip.offsetHeight - 5) + 'px'; // 5px de espacio
+                tooltip.style.left = (rect.left + window.scrollX + (this.offsetWidth / 2) - (tooltip.offsetWidth / 2)) + 'px';
+
                 tooltip.classList.add('animate__animated', 'animate__fadeIn', 'animate__faster');
-                document.body.appendChild(tooltip);
             });
 
             tooltipTriggerEl.addEventListener('mouseleave', function() {
+                // Ocultar y eliminar tooltip
                 if (tooltip) {
+                    tooltip.classList.remove('animate__fadeIn');
                     tooltip.classList.add('animate__fadeOut');
                     setTimeout(() => {
-                        tooltip.remove();
-                        tooltip = null;
-                    }, 200);
+                        if (tooltip) { // Verificar si aún existe (evitar errores si el mouse sale y entra rápidamente)
+                           tooltip.remove();
+                           tooltip = null;
+                        }
+                    }, 200); // Duración de la animación de fadeOut
                 }
             });
         });
     });
 </script>
 <script>
+    // Enfoque automático en el primer error o campo de entrada
     document.addEventListener('DOMContentLoaded', function() {
-        const firstError = document.querySelector('.error');
+        // Intenta enfocar el primer campo con error (si existe)
+        const firstError = document.querySelector('.border-red-500'); // Asumiendo que los errores tienen esta clase
         if (firstError) {
             firstError.focus();
+            // Opcional: Desplazar a la vista si es necesario
+            // firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
         } else {
-            const firstInput = document.querySelector('input, select, textarea');
-            if (firstInput) {
-                firstInput.focus();
+            // Si no hay errores, enfoca el primer campo de entrada del formulario principal o campo de búsqueda
+            const searchInput = document.querySelector('input[name="search"]');
+            if (searchInput) {
+                searchInput.focus();
+            } else {
+                const firstFormInput = document.querySelector('form input:not([type="hidden"]), form select, form textarea');
+                if (firstFormInput) {
+                    firstFormInput.focus();
+                }
             }
         }
     });

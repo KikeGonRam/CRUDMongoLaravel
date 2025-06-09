@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CRUD Avanzado - MongoDB & Laravel</title>
     
-    <!-- Tailwind CSS -->
+    {{-- Tailwind CSS --}}
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -32,13 +32,13 @@
         }
     </script>
     
-    <!-- Font Awesome -->
+    {{-- Font Awesome --}}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- Animate.css -->
+    {{-- Animate.css --}}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     
-    <!-- Custom CSS -->
+    {{-- Estilos Personalizados --}}
     <style>
         .gradient-bg {
             background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 50%, #f0f9ff 100%);
@@ -76,7 +76,7 @@
     </style>
 </head>
 <body class="gradient-bg min-h-screen font-sans antialiased">
-    <!-- Navbar -->
+    {{-- Barra de Navegación --}}
     <nav class="bg-white shadow-lg animate__animated animate__fadeInDown">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16">
@@ -102,14 +102,14 @@
                 </div>
                 <div class="-mr-2 flex items-center sm:hidden">
                     <button type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary" aria-controls="mobile-menu" aria-expanded="false">
-                        <span class="sr-only">Open main menu</span>
+                        <span class="sr-only">Abrir menú principal</span>
                         <i class="fas fa-bars"></i>
                     </button>
                 </div>
             </div>
         </div>
 
-        <!-- Mobile menu -->
+        {{-- Menú Móvil --}}
         <div class="sm:hidden hidden" id="mobile-menu">
             <div class="pt-2 pb-3 space-y-1">
                 <a href="{{ route('welcome') }}" class="bg-primary-light border-primary-dark text-white block pl-3 pr-4 py-2 border-l-4 text-base font-medium">
@@ -131,8 +131,8 @@
                         <i class="fas fa-user-circle text-3xl text-gray-400"></i>
                     </div>
                     <div class="ml-3">
-                        <div class="text-base font-medium text-gray-800">Admin User</div>
-                        <div class="text-sm font-medium text-gray-500">admin@example.com</div>
+                        <div class="text-base font-medium text-gray-800">Usuario Administrador</div>
+                        <div class="text-sm font-medium text-gray-500">correo@ejemplo.com</div>
                     </div>
                 </div>
                 <div class="mt-3 space-y-1">
@@ -150,9 +150,9 @@
         </div>
     </nav>
 
-    <!-- Main Content -->
+    {{-- Contenido Principal --}}
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <!-- Flash Messages -->
+        {{-- Mensajes Flash (Notificaciones) --}}
         <div id="flash-messages" class="fixed top-20 right-4 z-50 space-y-2">
             <div class="hidden animate__animated animate__fadeInRight animate__faster bg-green-100 border-l-4 border-green-500 text-green-700 p-4 max-w-xs shadow-lg" role="alert">
                 <div class="flex items-center">
@@ -166,13 +166,13 @@
             </div>
         </div>
 
-        <!-- Page Header -->
+        {{-- Encabezado de Página --}}
         <div class="mb-8 animate__animated animate__fadeIn">
             <div class="flex justify-between items-center">
                 <div>
                     <h1 class="text-3xl font-bold text-gray-800 flex items-center">
                         <i class="fas fa-@yield('icon', 'cog') text-primary-dark mr-3"></i>
-                        @yield('title', 'Dashboard')
+                        @yield('title', 'Panel de Control')
                     </h1>
                     <p class="mt-2 text-gray-600">@yield('subtitle', 'Bienvenido al panel de administración')</p>
                 </div>
@@ -197,13 +197,13 @@
             </div>
         </div>
 
-        <!-- Content -->
+        {{-- Contenido Específico de la Página --}}
         <div class="animate__animated animate__fadeInUp animate__faster">
             @yield('content')
         </div>
     </main>
 
-    <!-- Footer -->
+    {{-- Pie de Página --}}
     <footer class="bg-white mt-12 border-t border-gray-200 animate__animated animate__fadeInUp">
         <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
             <div class="flex flex-col md:flex-row justify-between items-center">
@@ -226,31 +226,38 @@
         </div>
     </footer>
 
-    <!-- Scripts -->
+    {{-- Scripts --}}
     <script>
-        // Mobile menu toggle
+        // Alternar menú móvil
         document.querySelector('[aria-controls="mobile-menu"]').addEventListener('click', function() {
             const menu = document.getElementById('mobile-menu');
             menu.classList.toggle('hidden');
             menu.classList.toggle('animate__slideInDown');
         });
 
-        // Show flash message example (for demo)
+        // Ejemplo de mensaje flash (para demostración)
+        // Este código es solo para fines de demostración y puede ser eliminado o modificado.
+        // Muestra un mensaje flash después de 1 segundo y lo oculta después de 5 segundos.
         setTimeout(() => {
-            const flashMsg = document.querySelector('#flash-messages div');
-            if(flashMsg) {
+            const flashMsg = document.querySelector('#flash-messages div'); // Asume que hay al menos un mensaje flash definido en el HTML
+            if(flashMsg && flashMsg.classList.contains('hidden')) { // Solo muestra si está oculto
                 flashMsg.classList.remove('hidden');
                 setTimeout(() => {
-                    flashMsg.classList.add('animate__fadeOutRight');
-                    setTimeout(() => flashMsg.classList.add('hidden'), 500);
-                }, 5000);
+                    flashMsg.classList.add('animate__fadeOutRight'); // Animación para ocultar
+                    // Espera a que termine la animación antes de añadir 'hidden' de nuevo
+                    flashMsg.addEventListener('animationend', () => {
+                        flashMsg.classList.add('hidden');
+                        flashMsg.classList.remove('animate__fadeOutRight'); // Limpia para futuras muestras
+                    }, { once: true });
+                }, 5000); // Tiempo que el mensaje es visible
             }
-        }, 1000);
+        }, 1000); // Retraso antes de mostrar el mensaje
 
-        // Tooltips
+        // Tooltips (Información sobre herramientas)
+        // Busca todos los elementos con el atributo 'data-tooltip'
         document.querySelectorAll('[data-tooltip]').forEach(el => {
-            el.addEventListener('mouseenter', showTooltip);
-            el.addEventListener('mouseleave', hideTooltip);
+            el.addEventListener('mouseenter', showTooltip); // Muestra el tooltip al pasar el mouse
+            el.addEventListener('mouseleave', hideTooltip); // Oculta el tooltip al quitar el mouse
         });
 
         function showTooltip(e) {
@@ -258,15 +265,31 @@
             const tooltip = document.createElement('div');
             tooltip.className = 'absolute z-50 bg-gray-800 text-white text-xs rounded py-1 px-2 whitespace-nowrap';
             tooltip.textContent = tooltipText;
-            tooltip.style.top = `${e.clientY + 10}px`;
-            tooltip.style.left = `${e.clientX + 10}px`;
-            tooltip.id = 'current-tooltip';
+            // Ajusta la posición del tooltip para que no se salga de la pantalla
+            const tooltipRect = tooltip.getBoundingClientRect();
+            const bodyRect = document.body.getBoundingClientRect();
+
+            let top = e.clientY + 10;
+            let left = e.clientX + 10;
+
+            if (left + tooltipRect.width > bodyRect.width) {
+                left = e.clientX - tooltipRect.width - 10;
+            }
+            if (top + tooltipRect.height > bodyRect.height) {
+                top = e.clientY - tooltipRect.height - 10;
+            }
+
+            tooltip.style.top = `${top}px`;
+            tooltip.style.left = `${left}px`;
+            tooltip.id = 'current-tooltip'; // ID para poder encontrarlo y eliminarlo
             document.body.appendChild(tooltip);
         }
 
         function hideTooltip() {
             const tooltip = document.getElementById('current-tooltip');
-            if(tooltip) tooltip.remove();
+            if(tooltip) {
+                tooltip.remove(); // Elimina el tooltip del DOM
+            }
         }
     </script>
     

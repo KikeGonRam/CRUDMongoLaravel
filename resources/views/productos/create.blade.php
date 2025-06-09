@@ -40,10 +40,10 @@
             <form action="{{ route('productos.store') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
                 @csrf
 
-                <!-- Nombre -->
+                {{-- Campo: Nombre del Producto --}}
                 <div class="relative">
                     <label for="nombre" class="flex items-center text-gray-600 font-semibold text-sm uppercase mb-2">
-                        <i class="fas fa-box text-primary-dark mr-2"></i> Nombre
+                        <i class="fas fa-box text-primary-dark mr-2"></i> Nombre <span class="text-red-500 ml-1">*</span>
                     </label>
                     <input type="text" name="nombre" id="nombre" required
                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary-dark transition duration-300 @error('nombre') border-red-500 @enderror"
@@ -54,10 +54,10 @@
                     @enderror
                 </div>
 
-                <!-- Precio -->
+                {{-- Campo: Precio del Producto --}}
                 <div class="relative">
                     <label for="precio" class="flex items-center text-gray-600 font-semibold text-sm uppercase mb-2">
-                        <i class="fas fa-dollar-sign text-primary-dark mr-2"></i> Precio
+                        <i class="fas fa-dollar-sign text-primary-dark mr-2"></i> Precio <span class="text-red-500 ml-1">*</span>
                     </label>
                     <input type="number" name="precio" id="precio" required step="0.01"
                             class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary-dark transition duration-300 @error('precio') border-red-500 @enderror"
@@ -68,7 +68,7 @@
                     @enderror
                 </div>
 
-                <!-- Descripción -->
+                {{-- Campo: Descripción del Producto --}}
                 <div class="relative">
                     <label for="descripcion" class="flex items-center text-gray-600 font-semibold text-sm uppercase mb-2">
                         <i class="fas fa-align-left text-primary-dark mr-2"></i> Descripción
@@ -81,7 +81,7 @@
                     @enderror
                 </div>
 
-                <!-- Foto -->
+                {{-- Campo: Foto del Producto --}}
                 <div class="relative">
                     <label for="foto" class="flex items-center text-gray-600 font-semibold text-sm uppercase mb-2">
                         <i class="fas fa-image text-primary-dark mr-2"></i> Foto
@@ -93,7 +93,7 @@
                     @enderror
                 </div>
 
-                <!-- Buttons -->
+                {{-- Botones de Acción --}}
                 <div class="flex flex-col sm:flex-row sm:space-x-4 space-y-4 sm:space-y-0">
                     <button type="submit"
                             class="inline-flex items-center justify-center px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary-dark transition duration-300 transform hover:scale-105 card-hover">

@@ -26,9 +26,9 @@
         </p>
     </div>
 
-    <!-- Feature Cards -->
+    {{-- Tarjetas de Características --}}
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-        <!-- Productos Card -->
+        {{-- Tarjeta de Productos --}}
         <a href="{{ route('productos.index') }}"
            class="group bg-white shadow-lg rounded-lg p-8 card-hover animate__animated animate__fadeInLeft animate__delay-2s flex flex-col items-center text-center transition-all duration-300 hover:bg-primary-light"
            data-tooltip="Gestiona tu inventario de productos">
@@ -41,7 +41,7 @@
             </div>
         </a>
 
-        <!-- Usuarios Card -->
+        {{-- Tarjeta de Usuarios --}}
         <a href="{{ route('usuarios.index') }}"
            class="group bg-white shadow-lg rounded-lg p-8 card-hover animate__animated animate__fadeInUp animate__delay-2s flex flex-col items-center text-center transition-all duration-300 hover:bg-primary-light"
            data-tooltip="Administra los usuarios del sistema">
@@ -54,7 +54,7 @@
             </div>
         </a>
 
-        <!-- Carros Card -->
+        {{-- Tarjeta de Carros --}}
         <a href="{{ route('carros.index') }}"
            class="group bg-white shadow-lg rounded-lg p-8 card-hover animate__animated animate__fadeInRight animate__delay-2s flex flex-col items-center text-center transition-all duration-300 hover:bg-primary-light"
            data-tooltip="Administra tu inventario de carros">
@@ -68,7 +68,7 @@
         </a>
     </div>
 
-    <!-- Call to Action -->
+    {{-- Llamada a la Acción --}}
     <div class="text-center mt-16 animate__animated animate__fadeInUp animate__delay-3s">
         <a href="{{ route('carros.index') }}"
            class="inline-flex items-center px-8 py-4 bg-primary text-white rounded-lg hover:bg-primary-dark transition duration-300 transform hover:scale-105 card-hover text-lg font-semibold"
@@ -77,7 +77,7 @@
         </a>
     </div>
 
-    <!-- Stats Section -->
+    {{-- Sección de Estadísticas --}}
     <div class="mt-16 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 max-w-5xl mx-auto">
         <div class="bg-white shadow-lg rounded-lg p-6 card-hover animate__animated animate__zoomIn animate__delay-4s text-center">
             <i class="fas fa-box text-3xl text-primary-dark mb-3"></i>

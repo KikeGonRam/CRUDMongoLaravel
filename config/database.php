@@ -6,30 +6,30 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Default Database Connection Name
+    | Nombre de Conexión de Base de Datos Predeterminada
     |--------------------------------------------------------------------------
     |
-    | Here you may specify which of the database connections below you wish
-    | to use as your default connection for all database work. Of course
-    | you may use many connections at once using the Database library.
+    | Aquí puedes especificar cuál de las conexiones de base de datos de abajo deseas
+    | utilizar como tu conexión predeterminada para todo el trabajo de base de datos.
+    | Por supuesto, puedes utilizar muchas conexiones a la vez utilizando la biblioteca Database.
     |
     */
 
-    'default' => env('DB_CONNECTION', 'mysql'),
+    'default' => env('DB_CONNECTION', 'mongodb'), // Cambiado a 'mongodb' para reflejar el proyecto
 
     /*
     |--------------------------------------------------------------------------
-    | Database Connections
+    | Conexiones de Base de Datos
     |--------------------------------------------------------------------------
     |
-    | Here are each of the database connections setup for your application.
-    | Of course, examples of configuring each database platform that is
-    | supported by Laravel is shown below to make development simple.
+    | Aquí se configuran cada una de las conexiones de base de datos para tu aplicación.
+    | Por supuesto, se muestran ejemplos de configuración de cada plataforma de base de datos
+    | soportada por Laravel para simplificar el desarrollo.
     |
     |
-    | All database work in Laravel is done through the PHP PDO facilities
-    | so make sure you have the driver for your particular database of
-    | choice installed on your machine before you begin development.
+    | Todo el trabajo de base de datos en Laravel se realiza a través de las facilidades PDO de PHP,
+    | así que asegúrate de tener instalado el controlador para tu base de datos particular
+    | en tu máquina antes de comenzar el desarrollo.
     |
     */
 
@@ -74,7 +74,7 @@ return [
             'charset' => 'utf8',
             'prefix' => '',
             'prefix_indexes' => true,
-            'search_path' => 'public',
+            'search_path' => 'public', // Esquema de búsqueda para PostgreSQL
             'sslmode' => 'prefer',
         ],
 
@@ -89,78 +89,85 @@ return [
             'charset' => 'utf8',
             'prefix' => '',
             'prefix_indexes' => true,
-            // 'encrypt' => env('DB_ENCRYPT', 'yes'),
-            // 'trust_server_certificate' => env('DB_TRUST_SERVER_CERTIFICATE', 'false'),
+            // 'encrypt' => env('DB_ENCRYPT', 'yes'), // Descomentar si se usa SQL Server con encriptación
+            // 'trust_server_certificate' => env('DB_TRUST_SERVER_CERTIFICATE', 'false'), // Descomentar y ajustar según la configuración del servidor
         ],
 
         'mongodb' => [
             'driver' => 'mongodb',
             'host' => env('DB_HOST', '127.0.0.1'),
-            'port' => env('DB_PORT', '27017'),
-            'database' => env('DB_DATABASE', 'forge'),
-            'username' => env('DB_USERNAME', 'forge'),
-            'password' => env('DB_PASSWORD', ''),
-            'options' => [
-                'database' => env('DB_AUTHENTICATION_DATABASE', 'admin'), // required with Mongo 3+
-            ],
-            'prefix' => '',
-            'prefix_indexes' => true,
-            'options' => [
-                'database' => env('DB_AUTHENTICATION_DATABASE', 'admin'), // required with Mongo 3+
-            ],
-        ],      
+            'port' => env('DB_PORT', 27017), // Puerto numérico
+            'database' => env('DB_DATABASE', 'homestead'), // Nombre de la base de datos
+            'username' => env('DB_USERNAME', 'homestead'), // Usuario (si es necesario)
+            'password' => env('DB_PASSWORD', 'secret'), // Contraseña (si es necesaria)
+            // 'options' => [ // Opciones de conexión para MongoDB
+                // 'database' => env('DB_AUTHENTICATION_DATABASE', 'admin'), // Requerido con Mongo 3+ si la autenticación no es en la misma DB
+            // ],
+            // Nota: La clave 'options' está duplicada abajo. Se comenta una para evitar confusión.
+            // La configuración de autenticación usualmente va dentro de un único array 'options'.
+            'prefix' => '', // Prefijo para colecciones (generalmente no se usa con MongoDB)
+            'prefix_indexes' => true, // Si los prefijos deben aplicarse a los índices
+             'options' => [ // Opciones de conexión para MongoDB
+                 'database' => env('DB_AUTHENTICATION_DATABASE', null), // Base de datos para autenticación, si es diferente a 'database'
+                                                                       // Usar 'null' o no definir si la autenticación es sobre la misma DB.
+                                                                       // Requerido con ciertas configuraciones de Mongo 3+.
+             ],
+        ],
 
     ],
 
     /*
     |--------------------------------------------------------------------------
-    | Migration Repository Table
+    | Tabla del Repositorio de Migraciones
     |--------------------------------------------------------------------------
     |
-    | This table keeps track of all the migrations that have already run for
-    | your application. Using this information, we can determine which of
-    | the migrations on disk haven't actually been run in the database.
+    | Esta tabla realiza un seguimiento de todas las migraciones que ya se han ejecutado
+    | para tu aplicación. Utilizando esta información, podemos determinar cuáles de
+    | las migraciones en disco realmente no se han ejecutado en la base de datos.
     |
     */
 
-    'migrations' => 'migrations',
+    'migrations' => 'migrations', // Nombre de la tabla que almacena el historial de migraciones
 
     /*
     |--------------------------------------------------------------------------
-    | Redis Databases
+    | Bases de Datos Redis
     |--------------------------------------------------------------------------
     |
-    | Redis is an open source, fast, and advanced key-value store that also
-    | provides a richer body of commands than a typical key-value system
-    | such as APC or Memcached. Laravel makes it easy to dig right in.
+    | Redis es un almacén de clave-valor avanzado, rápido y de código abierto que también
+    | proporciona un conjunto de comandos más rico que un sistema típico de clave-valor
+    | como APC o Memcached. Laravel facilita su uso inmediato.
     |
     */
 
     'redis' => [
 
-        'client' => env('REDIS_CLIENT', 'phpredis'),
+        'client' => env('REDIS_CLIENT', 'phpredis'), // Cliente de Redis a utilizar ('phpredis' o 'predis')
 
         'options' => [
+            // Opciones específicas del cliente, como el clúster o el prefijo.
             'cluster' => env('REDIS_CLUSTER', 'redis'),
             'prefix' => env('REDIS_PREFIX', Str::slug(env('APP_NAME', 'laravel'), '_').'_database_'),
         ],
 
         'default' => [
-            'url' => env('REDIS_URL'),
+            // Conexión predeterminada de Redis, usada para caché, sesiones, colas, etc.
+            'url' => env('REDIS_URL'), // URL de conexión (si se usa)
             'host' => env('REDIS_HOST', '127.0.0.1'),
-            'username' => env('REDIS_USERNAME'),
-            'password' => env('REDIS_PASSWORD'),
+            'username' => env('REDIS_USERNAME'), // Nombre de usuario (para Redis 6 ACLs o similar)
+            'password' => env('REDIS_PASSWORD'), // Contraseña
             'port' => env('REDIS_PORT', '6379'),
-            'database' => env('REDIS_DB', '0'),
+            'database' => env('REDIS_DB', '0'), // Número de la base de datos Redis (0-15)
         ],
 
         'cache' => [
+            // Conexión de Redis específica para la caché de la aplicación.
             'url' => env('REDIS_URL'),
             'host' => env('REDIS_HOST', '127.0.0.1'),
             'username' => env('REDIS_USERNAME'),
             'password' => env('REDIS_PASSWORD'),
             'port' => env('REDIS_PORT', '6379'),
-            'database' => env('REDIS_CACHE_DB', '1'),
+            'database' => env('REDIS_CACHE_DB', '1'), // Usar una base de datos diferente para la caché es una buena práctica
         ],
 
     ],
