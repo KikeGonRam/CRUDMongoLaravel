@@ -37,7 +37,7 @@
     </div>
     @endif
 
-    <!-- Search and Filter Card -->
+    {{-- Tarjeta de Búsqueda y Filtro --}}
     <div class="bg-white rounded-lg shadow-md p-6 mb-6 transition-all duration-300 hover:shadow-lg">
         <form method="GET" action="{{ route('usuarios.index') }}" class="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div class="md:col-span-3">
@@ -60,9 +60,15 @@
                 </button>
             </div>
         </form>
+        @if(request('search'))
+        <div class="mt-4 text-sm text-gray-600">
+            <span><strong>Búsqueda:</strong> "{{ request('search') }}"</span>
+            <a href="{{ route('usuarios.index') }}" class="ml-4 text-primary hover:text-primary-dark underline">Limpiar búsqueda</a>
+        </div>
+        @endif
     </div>
 
-    <!-- Users Table -->
+    {{-- Tabla de Usuarios --}}
     <div class="bg-white shadow-lg rounded-lg overflow-hidden animate__animated animate__fadeInUp">
         <div class="overflow-x-auto">
             <table class="min-w-full divide-y divide-gray-200">
@@ -92,11 +98,11 @@
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
-                    @forelse($usuarios as $usuario)
-                    <tr class="hover:bg-gray-50 transition-colors duration-150 animate__animated animate__fadeIn" style="animation-delay: {{ $loop->index * 0.05 }}s">
+                    @forelse($usuarios as $index => $usuario) {{-- Added $index for alternating rows --}}
+                    <tr class="@if($index % 2 === 0) bg-white @else bg-gray-50 @endif hover:bg-gray-100 transition-colors duration-150 animate__animated animate__fadeIn" style="animation-delay: {{ $loop->index * 0.05 }}s">
                         <td class="px-6 py-4 whitespace-nowrap">
                             <div class="flex items-center">
-                                <div class="flex-shrink-0 h-10 w-10 rounded-full bg-gradient-to-r from-primary-light to-secondary-light flex items-center justify-center text-white">
+                                <div class="flex-shrink-0 h-10 w-10 rounded-full bg-gradient-to-r from-primary-light to-secondary-light flex items-center justify-center text-white font-semibold">
                                     {{ strtoupper(substr($usuario->nombre, 0, 1)) }}{{ strtoupper(substr($usuario->apellido, 0, 1)) }}
                                 </div>
                                 <div class="ml-4">
@@ -126,23 +132,23 @@
                             </div>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                            <div class="flex space-x-2">
-                                <a href="{{ route('usuarios.show', $usuario->_id) }}" 
-                                   class="text-blue-600 hover:text-blue-900 transition-colors duration-200 p-2 rounded-full hover:bg-blue-50"
+                            <div class="flex items-center space-x-2">
+                                <a href="{{ route('usuarios.show', $usuario->_id) }}"
+                                   class="p-2 text-blue-600 bg-blue-100 hover:bg-blue-200 rounded-full transition-colors duration-200"
                                    data-tooltip="Ver detalles">
                                     <i class="fas fa-eye"></i>
                                 </a>
-                                <a href="{{ route('usuarios.edit', $usuario->_id) }}" 
-                                   class="text-yellow-600 hover:text-yellow-900 transition-colors duration-200 p-2 rounded-full hover:bg-yellow-50"
+                                <a href="{{ route('usuarios.edit', $usuario->_id) }}"
+                                   class="p-2 text-yellow-600 bg-yellow-100 hover:bg-yellow-200 rounded-full transition-colors duration-200"
                                    data-tooltip="Editar">
                                     <i class="fas fa-edit"></i>
                                 </a>
                                 <form action="{{ route('usuarios.destroy', $usuario->_id) }}" method="POST" class="inline-block">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" 
+                                    <button type="submit"
                                             onclick="return confirm('¿Estás seguro de eliminar este usuario permanentemente?')"
-                                            class="text-red-600 hover:text-red-900 transition-colors duration-200 p-2 rounded-full hover:bg-red-50"
+                                            class="p-2 text-red-600 bg-red-100 hover:bg-red-200 rounded-full transition-colors duration-200"
                                             data-tooltip="Eliminar">
                                         <i class="fas fa-trash-alt"></i>
                                     </button>
@@ -154,9 +160,14 @@
                     <tr class="animate__animated animate__fadeIn">
                         <td colspan="4" class="px-6 py-4 whitespace-nowrap text-center">
                             <div class="flex flex-col items-center justify-center py-8">
-                                <i class="fas fa-user-slash text-4xl text-gray-400 mb-3 animate__animated animate__bounceIn"></i>
-                                <p class="text-lg font-medium text-gray-600">No se encontraron usuarios</p>
-                                <p class="text-sm text-gray-500 mt-1">Intenta con otros términos de búsqueda o crea un nuevo usuario</p>
+                                <i class="fas {{ request('search') ? 'fa-user-slash' : 'fa-users' }} text-4xl text-gray-400 mb-3 animate__animated animate__bounceIn"></i>
+                                @if (request('search'))
+                                    <p class="text-lg font-medium text-gray-600">No se encontraron usuarios que coincidan con "{{ request('search') }}"</p>
+                                    <p class="text-sm text-gray-500 mt-1">Intenta con otros términos de búsqueda.</p>
+                                @else
+                                    <p class="text-lg font-medium text-gray-600">No hay usuarios registrados</p>
+                                    <p class="text-sm text-gray-500 mt-1">Comienza agregando un nuevo usuario.</p>
+                                @endif
                                 <a href="{{ route('usuarios.create') }}" class="mt-4 inline-flex items-center px-4 py-2 bg-primary border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-primary-dark focus:bg-primary-dark active:bg-primary-darker focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 transition ease-in-out duration-150">
                                     <i class="fas fa-user-plus mr-2"></i> Crear Usuario
                                 </a>
@@ -169,7 +180,7 @@
         </div>
     </div>
 
-    <!-- Pagination -->
+    {{-- Paginación --}}
     @if($usuarios->hasPages())
     <div class="mt-6 animate__animated animate__fadeInUp">
         <div class="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6 rounded-b-lg shadow-sm">
@@ -182,48 +193,58 @@
 
 @section('scripts')
 <script>
-    // Tooltips
+    // Tooltips (Información sobre herramientas)
     document.addEventListener('DOMContentLoaded', function() {
         const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-tooltip]'));
         
         tooltipTriggerList.map(function (tooltipTriggerEl) {
-            let tooltip = null;
+            let tooltip = null; // Almacena la referencia al elemento tooltip
             
             tooltipTriggerEl.addEventListener('mouseenter', function() {
-                // Create tooltip element
+                // Crear elemento tooltip
                 tooltip = document.createElement('div');
                 tooltip.className = 'absolute z-50 bg-gray-800 text-white text-xs rounded py-1 px-2 whitespace-nowrap shadow-lg';
                 tooltip.textContent = this.getAttribute('data-tooltip');
-                tooltip.style.top = (this.getBoundingClientRect().top - 30) + 'px';
-                tooltip.style.left = (this.getBoundingClientRect().left + this.offsetWidth / 2 - 50) + 'px';
-                tooltip.classList.add('animate__animated', 'animate__fadeIn', 'animate__faster');
                 
-                document.body.appendChild(tooltip);
+                // Posicionar tooltip (ajustado para que aparezca arriba del elemento)
+                const rect = this.getBoundingClientRect();
+                document.body.appendChild(tooltip); // Añadir al body para calcular dimensiones correctamente
+
+                tooltip.style.top = (rect.top + window.scrollY - tooltip.offsetHeight - 5) + 'px'; // 5px de espacio
+                tooltip.style.left = (rect.left + window.scrollX + (this.offsetWidth / 2) - (tooltip.offsetWidth / 2)) + 'px';
+
+                tooltip.classList.add('animate__animated', 'animate__fadeIn', 'animate__faster');
             });
             
             tooltipTriggerEl.addEventListener('mouseleave', function() {
+                // Ocultar y eliminar tooltip
                 if (tooltip) {
+                    tooltip.classList.remove('animate__fadeIn');
                     tooltip.classList.add('animate__fadeOut');
                     setTimeout(() => {
-                        tooltip.remove();
-                        tooltip = null;
-                    }, 200);
+                        if (tooltip) { // Verificar si aún existe
+                           tooltip.remove();
+                           tooltip = null;
+                        }
+                    }, 200); // Duración de la animación de fadeOut
                 }
             });
         });
 
-        // Sort table function
+        // Función para ordenar la tabla
         window.sortTable = function(column) {
             const url = new URL(window.location.href);
-            let sort = url.searchParams.get('sort');
-            let direction = 'asc';
+            let sort = url.searchParams.get('sort'); // Obtener parámetro de ordenación actual
+            let direction = 'asc'; // Dirección por defecto
 
             if (sort === column) {
+                // Si ya se está ordenando por esta columna, invertir la dirección
                 direction = url.searchParams.get('direction') === 'asc' ? 'desc' : 'asc';
             }
 
+            // Establecer los nuevos parámetros de ordenación y recargar la página
             url.searchParams.set('sort', column);
-            url.searchParams.set('direction', direction);
+            url.search_params.set('direction', direction); // Corrección: search_params -> searchParams
             window.location.href = url.toString();
         };
     });

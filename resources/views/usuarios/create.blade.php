@@ -23,13 +23,27 @@
 <div class="container mx-auto px-4 py-8">
     <div class="max-w-2xl mx-auto">
         <div class="bg-white shadow-lg rounded-lg p-8 card-hover animate__animated animate__fadeInUp animate__faster">
+            @if ($errors->any())
+                <div class="mb-6 bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded-lg animate__animated animate__shakeX">
+                    <div class="flex items-center">
+                        <i class="fas fa-exclamation-circle mr-2"></i>
+                        <p class="font-bold">Errores de validación</p>
+                    </div>
+                    <ul class="mt-2 text-sm list-disc list-inside">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
             <form action="{{ route('usuarios.store') }}" method="POST" class="space-y-6">
                 @csrf
 
-                <!-- Nombre -->
+                {{-- Campo: Nombre --}}
                 <div class="relative">
                     <label for="nombre" class="flex items-center text-gray-600 font-semibold text-sm uppercase mb-2">
-                        <i class="fas fa-user text-primary-dark mr-2"></i> Nombre
+                        <i class="fas fa-user text-primary-dark mr-2"></i> Nombre <span class="text-red-500 ml-1">*</span>
                     </label>
                     <input type="text" name="nombre" id="nombre" required
                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary-dark transition duration-300 @error('nombre') border-red-500 @enderror"
@@ -41,10 +55,10 @@
                     @enderror
                 </div>
 
-                <!-- Apellido -->
+                {{-- Campo: Apellido --}}
                 <div class="relative">
                     <label for="apellido" class="flex items-center text-gray-600 font-semibold text-sm uppercase mb-2">
-                        <i class="fas fa-user text-primary-dark mr-2"></i> Apellido
+                        <i class="fas fa-user text-primary-dark mr-2"></i> Apellido <span class="text-red-500 ml-1">*</span>
                     </label>
                     <input type="text" name="apellido" id="apellido" required
                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary-dark transition duration-300 @error('apellido') border-red-500 @enderror"
@@ -56,10 +70,10 @@
                     @enderror
                 </div>
 
-                <!-- Email -->
+                {{-- Campo: Correo Electrónico --}}
                 <div class="relative">
                     <label for="email" class="flex items-center text-gray-600 font-semibold text-sm uppercase mb-2">
-                        <i class="fas fa-envelope text-primary-dark mr-2"></i> Correo Electrónico
+                        <i class="fas fa-envelope text-primary-dark mr-2"></i> Correo Electrónico <span class="text-red-500 ml-1">*</span>
                     </label>
                     <input type="email" name="email" id="email" required
                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary-dark transition duration-300 @error('email') border-red-500 @enderror"
@@ -71,10 +85,10 @@
                     @enderror
                 </div>
 
-                <!-- Teléfono -->
+                {{-- Campo: Teléfono --}}
                 <div class="relative">
                     <label for="telefono" class="flex items-center text-gray-600 font-semibold text-sm uppercase mb-2">
-                        <i class="fas fa-phone text-primary-dark mr-2"></i> Teléfono
+                        <i class="fas fa-phone text-primary-dark mr-2"></i> Teléfono <span class="text-red-500 ml-1">*</span>
                     </label>
                     <input type="text" name="telefono" id="telefono" required
                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary-dark transition duration-300 @error('telefono') border-red-500 @enderror"
@@ -86,10 +100,10 @@
                     @enderror
                 </div>
 
-                <!-- Fecha de Nacimiento -->
+                {{-- Campo: Fecha de Nacimiento --}}
                 <div class="relative">
                     <label for="fecha_nacimiento" class="flex items-center text-gray-600 font-semibold text-sm uppercase mb-2">
-                        <i class="fas fa-calendar-alt text-primary-dark mr-2"></i> Fecha de Nacimiento
+                        <i class="fas fa-calendar-alt text-primary-dark mr-2"></i> Fecha de Nacimiento <span class="text-red-500 ml-1">*</span>
                     </label>
                     <input type="date" name="fecha_nacimiento" id="fecha_nacimiento" required
                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary-dark transition duration-300 @error('fecha_nacimiento') border-red-500 @enderror"
@@ -100,7 +114,7 @@
                     @enderror
                 </div>
 
-                <!-- Buttons -->
+                {{-- Botones de Acción --}}
                 <div class="flex flex-col sm:flex-row sm:space-x-4 space-y-4 sm:space-y-0">
                     <button type="submit"
                             class="inline-flex items-center justify-center px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary-dark transition duration-300 transform hover:scale-105 card-hover"

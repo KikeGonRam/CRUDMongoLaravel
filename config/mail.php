@@ -4,119 +4,128 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Default Mailer
+    | Mailer Predeterminado (Default Mailer)
     |--------------------------------------------------------------------------
     |
-    | This option controls the default mailer that is used to send any email
-    | messages sent by your application. Alternative mailers may be setup
-    | and used as needed; however, this mailer will be used by default.
+    | Esta opción controla el mailer predeterminado que se utiliza para enviar
+    | cualquier mensaje de correo electrónico enviado por tu aplicación. Se pueden
+    | configurar y utilizar mailers alternativos según sea necesario; sin embargo,
+    | este mailer se utilizará de forma predeterminada.
     |
     */
 
-    'default' => env('MAIL_MAILER', 'smtp'),
+    'default' => env('MAIL_MAILER', 'smtp'), // Mailer a usar: smtp, sendmail, log, etc.
 
     /*
     |--------------------------------------------------------------------------
-    | Mailer Configurations
+    | Configuraciones de Mailer
     |--------------------------------------------------------------------------
     |
-    | Here you may configure all of the mailers used by your application plus
-    | their respective settings. Several examples have been configured for
-    | you and you are free to add your own as your application requires.
+    | Aquí puedes configurar todos los mailers utilizados por tu aplicación además
+    | de sus respectivas configuraciones. Se han configurado varios ejemplos para
+    | ti y eres libre de agregar los tuyos propios según lo requiera tu aplicación.
     |
-    | Laravel supports a variety of mail "transport" drivers to be used while
-    | sending an e-mail. You will specify which one you are using for your
-    | mailers below. You are free to add additional mailers as required.
+    | Laravel soporta una variedad de controladores de "transporte" de correo para ser
+    | utilizados al enviar un correo electrónico. Especificarás cuál estás utilizando
+    | para tus mailers a continuación. Eres libre de agregar mailers adicionales según sea necesario.
     |
-    | Supported: "smtp", "sendmail", "mailgun", "ses",
+    | Soportados: "smtp", "sendmail", "mailgun", "ses",
     |            "postmark", "log", "array", "failover"
     |
     */
 
     'mailers' => [
         'smtp' => [
-            'transport' => 'smtp',
-            'host' => env('MAIL_HOST', 'smtp.mailgun.org'),
-            'port' => env('MAIL_PORT', 587),
-            'encryption' => env('MAIL_ENCRYPTION', 'tls'),
-            'username' => env('MAIL_USERNAME'),
-            'password' => env('MAIL_PASSWORD'),
-            'timeout' => null,
-            'local_domain' => env('MAIL_EHLO_DOMAIN'),
+            'transport' => 'smtp', // Protocolo de transporte.
+            'host' => env('MAIL_HOST', 'smtp.mailgun.org'), // Host del servidor SMTP.
+            'port' => env('MAIL_PORT', 587), // Puerto SMTP (587 para TLS, 465 para SSL).
+            'encryption' => env('MAIL_ENCRYPTION', 'tls'), // Encriptación (tls, ssl, o null).
+            'username' => env('MAIL_USERNAME'), // Nombre de usuario SMTP.
+            'password' => env('MAIL_PASSWORD'), // Contraseña SMTP.
+            'timeout' => null, // Tiempo de espera en segundos para la conexión SMTP.
+            'local_domain' => env('MAIL_EHLO_DOMAIN'), // Nombre de dominio para el comando EHLO/HELO (opcional).
         ],
 
         'ses' => [
-            'transport' => 'ses',
+            'transport' => 'ses', // Para Amazon SES (Simple Email Service).
+                                  // Requiere configuración adicional de AWS SDK.
         ],
 
         'mailgun' => [
-            'transport' => 'mailgun',
-            // 'client' => [
+            'transport' => 'mailgun', // Para Mailgun.
+                                      // Requiere configurar las credenciales de Mailgun en services.php o .env.
+            // 'client' => [ // Configuración opcional del cliente HTTP.
             //     'timeout' => 5,
             // ],
         ],
 
         'postmark' => [
-            'transport' => 'postmark',
-            // 'client' => [
+            'transport' => 'postmark', // Para Postmark.
+                                       // Requiere configurar el token de Postmark.
+            // 'client' => [ // Configuración opcional del cliente HTTP.
             //     'timeout' => 5,
             // ],
         ],
 
         'sendmail' => [
-            'transport' => 'sendmail',
-            'path' => env('MAIL_SENDMAIL_PATH', '/usr/sbin/sendmail -bs -i'),
+            'transport' => 'sendmail', // Para usar el comando sendmail del servidor.
+            'path' => env('MAIL_SENDMAIL_PATH', '/usr/sbin/sendmail -bs -i'), // Ruta al ejecutable de sendmail.
         ],
 
         'log' => [
-            'transport' => 'log',
-            'channel' => env('MAIL_LOG_CHANNEL'),
+            'transport' => 'log', // Escribe los correos en los archivos de log en lugar de enviarlos.
+                                  // Útil para desarrollo y pruebas.
+            'channel' => env('MAIL_LOG_CHANNEL'), // Canal de log a utilizar (definido en logging.php).
         ],
 
         'array' => [
-            'transport' => 'array',
+            'transport' => 'array', // "Envía" los correos a un array en memoria. Útil para pruebas.
         ],
 
         'failover' => [
-            'transport' => 'failover',
+            'transport' => 'failover', // Permite definir una lista de mailers de respaldo.
+                                       // Intentará enviar con cada uno en orden hasta que uno tenga éxito.
             'mailers' => [
-                'smtp',
-                'log',
+                'smtp', // Primero intenta con smtp.
+                'log',  // Si smtp falla, usa log.
             ],
         ],
     ],
 
     /*
     |--------------------------------------------------------------------------
-    | Global "From" Address
+    | Dirección Global "From" (Remitente)
     |--------------------------------------------------------------------------
     |
-    | You may wish for all e-mails sent by your application to be sent from
-    | the same address. Here, you may specify a name and address that is
-    | used globally for all e-mails that are sent by your application.
+    | Es posible que desees que todos los correos electrónicos enviados por tu aplicación
+    | se envíen desde la misma dirección. Aquí, puedes especificar un nombre y una
+    | dirección que se utiliza globalmente para todos los correos electrónicos que son
+    | enviados por tu aplicación.
     |
     */
 
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'hello@example.com'),
-        'name' => env('MAIL_FROM_NAME', 'Example'),
+        'address' => env('MAIL_FROM_ADDRESS', 'hola@example.com'), // Dirección de correo del remitente.
+        'name' => env('MAIL_FROM_NAME', 'Ejemplo Laravel'), // Nombre del remitente.
     ],
 
     /*
     |--------------------------------------------------------------------------
-    | Markdown Mail Settings
+    | Configuración de Correo Markdown
     |--------------------------------------------------------------------------
     |
-    | If you are using Markdown based email rendering, you may configure your
-    | theme and component paths here, allowing you to customize the design
-    | of the emails. Or, you may simply stick with the Laravel defaults!
+    | Si estás utilizando la renderización de correo basada en Markdown, puedes
+    | configurar tus rutas de tema y componentes aquí, lo que te permite
+    | personalizar el diseño de los correos electrónicos. O, ¡simplemente puedes
+    | apegarte a los valores predeterminados de Laravel!
     |
     */
 
     'markdown' => [
-        'theme' => 'default',
+        'theme' => 'default', // Tema de Markdown a utilizar (ej. 'default', o uno personalizado).
 
         'paths' => [
+            // Rutas donde buscar componentes de correo Markdown.
             resource_path('views/vendor/mail'),
         ],
     ],

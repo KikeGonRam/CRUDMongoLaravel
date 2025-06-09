@@ -57,16 +57,26 @@
                     </div>
                 </div>
             </div>
-            <div class="mt-8 flex flex-col sm:flex-row sm:space-x-4 space-y-4 sm:space-y-0">
-                <a href="{{ route('carros.edit', $carro->_id) }}"
-                   class="inline-flex items-center justify-center px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary-dark transition duration-300 transform hover:scale-105 card-hover"
-                   data-tooltip="Editar información del carro">
-                    <i class="fas fa-edit mr-2"></i> Editar
-                </a>
+            <div class="mt-8 pt-6 border-t border-gray-200 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                <div class="flex space-x-3">
+                    <a href="{{ route('carros.edit', $carro->_id) }}"
+                       class="inline-flex items-center justify-center px-5 py-2.5 bg-primary text-white rounded-lg hover:bg-primary-dark transition duration-300 transform hover:scale-105 card-hover text-sm font-medium"
+                       data-tooltip="Editar información del carro">
+                        <i class="fas fa-edit mr-2"></i> Editar Carro
+                    </a>
+                    <form action="{{ route('carros.destroy', $carro->_id) }}" method="POST" class="inline-block">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" onclick="return confirm('¿Estás seguro de eliminar este carro permanentemente?')"
+                                class="inline-flex items-center justify-center px-5 py-2.5 bg-red-600 text-white rounded-lg hover:bg-red-700 transition duration-300 transform hover:scale-105 card-hover text-sm font-medium"
+                                data-tooltip="Eliminar este carro">
+                            <i class="fas fa-trash-alt mr-2"></i> Eliminar
+                        </button>
+                    </form>
+                </div>
                 <a href="{{ route('carros.index') }}"
-                   class="inline-flex items-center justify-center px-6 py-3 bg-secondary text-white rounded-lg hover:bg-secondary-dark transition duration-300 transform hover:scale-105 card-hover"
-                   data-tooltip="Volver a la lista de carros">
-                    <i class="fas fa-arrow-left mr-2"></i> Volver
+                   class="mt-3 sm:mt-0 inline-flex items-center text-sm text-primary hover:text-primary-dark transition-colors duration-300">
+                    <i class="fas fa-arrow-left mr-2"></i> Volver a la lista
                 </a>
             </div>
         </div>
