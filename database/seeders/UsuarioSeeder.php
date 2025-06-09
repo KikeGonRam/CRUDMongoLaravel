@@ -13,7 +13,7 @@ class UsuarioSeeder extends Seeder
         $faker = Faker::create();
 
         $batchSize = 1000; // para no saturar memoria
-        $total = 30000;
+        $total = 50000;
 
         for ($i = 0; $i < $total / $batchSize; $i++) {
             $data = [];

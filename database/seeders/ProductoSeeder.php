@@ -15,7 +15,7 @@ class ProductoSeeder extends Seeder
         $faker = \Faker\Factory::create();
 
         $batchSize = 100; // Tamaño del batch para no saturar memoria
-        $total = 10000; // Total de registros a insertar
+        $total = 50000; // Total de registros a insertar
 
         for ($i = 0; $i < $total / $batchSize; $i++) {
             $data = [];

@@ -95,6 +95,7 @@ Aquí hay ejemplos de imágenes utilizadas en el proyecto:
 
 ![Ejemplo imagen 1](public/image3.png)
 ![Ejemplo imagen 2](public/image2.png)
+![Ejemplo video](public/video.mp4)
 
 ## 🛠️ Uso
 

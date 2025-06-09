@@ -13,7 +13,7 @@ class CarroSeeder extends Seeder
         $faker = Faker::create();
 
         $batchSize = 100; // Insertar en batches para no saturar memoria
-        $total = 10000; // Total de registros a insertar
+        $total = 50000; // Total de registros a insertar
 
         for ($i = 0; $i < $total / $batchSize; $i++) {
             $data = [];
