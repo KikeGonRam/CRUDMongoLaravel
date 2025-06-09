@@ -93,8 +93,8 @@ Este proyecto implementa un sistema CRUD (Crear, Leer, Actualizar, Eliminar) com
 
 Aquí hay ejemplos de imágenes utilizadas en el proyecto:
 
-![Ejemplo Imagen 1](public/imagen3.png)
-![Ejemplo Imagen 2](public/imagen2.png)
+![Ejemplo imagen 1](public/image3.png)
+![Ejemplo imagen 2](public/image2.png)
 
 ## 🛠️ Uso
 
